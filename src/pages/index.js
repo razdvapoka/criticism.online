@@ -1,22 +1,32 @@
 import React from "react"
 import { Link } from "gatsby"
+import { graphql } from "gatsby"
+import Markdown from "react-markdown"
 
 import Layout from "../components/layout"
-import Image from "../components/image"
 import SEO from "../components/seo"
 
-const IndexPage = () => (
-  <Layout>
-    <SEO title="Home" />
-    <h1>Hi people</h1>
-    <p>Welcome to your new Gatsby site.</p>
-    <p>Now go build something great.</p>
-    <div style={{ maxWidth: `300px`, marginBottom: `1.45rem` }}>
-      <Image />
-    </div>
-    <Link to="/page-2/">Go to page 2</Link> <br />
-    <Link to="/using-typescript/">Go to "Using TypeScript"</Link>
-  </Layout>
-)
+const IndexPage = ({ data: { contentfulPage: pageData } }) => {
+  return (
+    <Layout>
+      <SEO title="Home" />
+      <h1 className="">{pageData.title}</h1>
+      <p>{pageData.description}</p>
+      <Markdown>{pageData.content.content}</Markdown>
+    </Layout>
+  )
+}
+
+export const query = graphql`
+  {
+    contentfulPage(title: { eq: "main" }) {
+      description
+      title
+      content {
+        content
+      }
+    }
+  }
+`
 
 export default IndexPage

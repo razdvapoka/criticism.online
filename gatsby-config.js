@@ -1,8 +1,10 @@
+require("dotenv").config()
+
 module.exports = {
   siteMetadata: {
-    title: `Gatsby Default Starter`,
-    description: `Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.`,
-    author: `@gatsbyjs`,
+    title: `Criticism.online`,
+    description: `Experiment in slow media`,
+    author: `Some jerks`,
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
@@ -11,6 +13,13 @@ module.exports = {
       options: {
         name: `images`,
         path: `${__dirname}/src/images`,
+      },
+    },
+    {
+      resolve: `gatsby-source-contentful`,
+      options: {
+        spaceId: process.env.CONTENTFUL_SPACE_ID,
+        accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
       },
     },
     `gatsby-transformer-sharp`,
@@ -25,6 +34,22 @@ module.exports = {
         theme_color: `#663399`,
         display: `minimal-ui`,
         icon: `src/images/gatsby-icon.png`, // This path is relative to the root of the site.
+      },
+    },
+    {
+      resolve: `gatsby-plugin-stylus-resources`,
+      options: {
+        resources: [
+          "./src/styles/consts.styl",
+          "./src/styles/fonts.styl",
+          "./src/styles/utils.styl",
+          "./src/styles/text-styles.styl",
+        ],
+        postCssPlugins: [
+          require("tailwindcss"),
+          require("autoprefixer"),
+          require("cssnano"),
+        ],
       },
     },
     // this (optional) plugin enables Progressive Web App + Offline functionality
